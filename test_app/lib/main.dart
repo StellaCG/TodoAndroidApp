@@ -22,7 +22,7 @@ class TodoApp extends StatelessWidget {
 }
 
 class TodoList extends StatefulWidget {
-  const TodoList({super.key, required this.title});
+  const TodoList({super.key, required this.title,});
 
   final String title;
 
@@ -36,7 +36,11 @@ class _TodoListState extends State<TodoList> {
 
   void _addTodoItem(String name) {
     setState(() {
-      _todos.add(Todo(name: name, completed: false));
+      int tmp_id = 0;
+      _todos.forEach((element) {
+        if (element.id == tmp_id) { tmp_id++; }
+      });
+      _todos.add(Todo(name: name, id: tmp_id, completed: false));
     });
     _textFieldController.clear();
   }
@@ -49,7 +53,7 @@ class _TodoListState extends State<TodoList> {
 
   void _deleteTodo(Todo todo) {
     setState(() {
-      _todos.removeWhere((element) => element.name == todo.name);
+      _todos.removeWhere((element) => element.name == todo.name && element.id == todo.id);
     });
   }
 
@@ -123,8 +127,9 @@ class _TodoListState extends State<TodoList> {
 }
 
 class Todo {
-  Todo({required this.name, required this.completed});
+  Todo({required this.name, required this.id, required this.completed});
   String name;
+  int id;
   bool completed;
 }
 
